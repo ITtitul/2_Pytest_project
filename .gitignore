@@ -8,6 +8,7 @@
 .idea/
 .venv/
 __pycache__
+images/
 README.MD
 
 # User-specific stuff
