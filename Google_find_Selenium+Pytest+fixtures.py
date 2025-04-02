@@ -1,38 +1,48 @@
-from selenium import webdriver
+import pytest
+import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-# Инициализация WebDriver (Chrome)
-driver = webdriver.Chrome()
 
-try:
-    # Открываем Google
-    driver.get("https://google.com")
-
-    # Ожидаем, пока строка поиска станет доступной
-    search_box = WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.NAME, "q"))
-    )
-
-    # Вводим текст в строку поиска и отправляем запрос
-    search_box.clear()  # Аналог be.blank
-    search_box.send_keys("yashaka/selene")
-    search_box.send_keys(Keys.RETURN)
-
-    # Проверяем, что в HTML-странице присутствует нужный текст
-    WebDriverWait(driver, 5).until(
-        EC.text_to_be_present_in_element((By.TAG_NAME, "html"), "About this page")
-    )
-
-    # Проверяем, что в результатах поиска есть упоминание о Selene
-    search_results = WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.ID, "search"))
-    )
-
-    assert "Selene - User-oriented Web UI browser tests in Python" in search_results.text
-
-finally:
-    # Закрываем браузер
+@pytest.fixture(scope="session")
+def driver():
+    driver = webdriver.Chrome()
+    yield driver
     driver.quit()
+
+
+@pytest.fixture(scope="session")
+def browser_context_args(browser_context_args):
+    return {
+    "viewport": {
+        "width": 1920,
+        "height": 1000
+    }
+}
+
+
+# Открываем страницу
+def test_google_search(driver):
+
+    driver.get("http://www.google.com")
+
+
+    # Ищем элемент
+    search_box = driver.find_element(By.NAME, "q")
+
+
+    # Вводим запрос в поисковую строку
+    search_box.send_keys("sldjkfhngo;liehgjehftyh")
+    time.sleep(5)
+
+
+    # Отправляем запрос
+    search_box.send_keys(Keys.RETURN)
+    time.sleep(5)
+
+
+    # Проверяем загрузку страницы
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "botstuff")))
