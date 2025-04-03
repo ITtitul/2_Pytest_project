@@ -1,27 +1,9 @@
-import pytest
 import time
+import selenium
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
-
-@pytest.fixture(scope="session")
-def driver():
-    driver = webdriver.Chrome()
-    yield driver
-    driver.quit()
-
-
-@pytest.fixture(scope="session")
-def browser_context_args(browser_context_args):
-    return {
-    "viewport": {
-        "width": 1920,
-        "height": 1000
-    }
-}
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 # Открываем страницу

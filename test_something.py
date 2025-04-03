@@ -1,4 +1,4 @@
 def test_sum():
     a = 5
     b = 10
-    assert a == b
+    assert a == b, "a не равно b"
